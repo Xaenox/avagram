@@ -1,0 +1,85 @@
+[gd_scene load_steps=8 format=3 uid="uid://c5elfrhnovd2p"]
+
+[ext_resource type="Script" path="res://scripts/temp_room.gd" id="1_4ya2p"]
+[ext_resource type="Script" path="res://scripts/player.gd" id="1_ht7ox"]
+[ext_resource type="Shape3D" uid="uid://bei14051ih7f1" path="res://models/charachter_capsule.tres" id="1_ndbyp"]
+[ext_resource type="CapsuleMesh" uid="uid://chsubxj2jp5nw" path="res://models/character_capsule_mesh.tres" id="2_xp6da"]
+[ext_resource type="PlaneMesh" uid="uid://cwwdcb2fjq84a" path="res://models/plane_mesh.tres" id="3_ks0vy"]
+[ext_resource type="Script" path="res://scripts/camera_3d.gd" id="5_ayg11"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_074y3"]
+size = Vector3(20, 0.2, 20)
+
+[node name="TempRoom" type="Node3D"]
+script = ExtResource("1_4ya2p")
+
+[node name="Player" type="CharacterBody3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.10694, 0)
+script = ExtResource("1_ht7ox")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Player"]
+shape = ExtResource("1_ndbyp")
+
+[node name="Character" type="MeshInstance3D" parent="Player"]
+mesh = ExtResource("2_xp6da")
+
+[node name="Hat" type="Node3D" parent="Player/Character"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="Ground" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0287445, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0647902, 0)
+shape = SubResource("BoxShape3D_074y3")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Ground"]
+mesh = ExtResource("3_ks0vy")
+skeleton = NodePath("")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.599415, 0.800439, 0, -0.800439, 0.599415, 0, 5.86241, 6.27229)
+shadow_enabled = true
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(-0.0535502, -0.644588, 0.762653, -0.00158911, 0.763803, 0.645448, -0.998564, 0.033352, -0.0419262, 5.68041, 5.86565, 0)
+script = ExtResource("5_ayg11")
+
+[node name="ProgressBar" type="ProgressBar" parent="Camera3D"]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 27.0
+grow_horizontal = 2
+
+[node name="Money" type="Label" parent="Camera3D"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -97.0
+offset_top = 44.0
+offset_right = 104.0
+offset_bottom = 67.0
+grow_horizontal = 2
+text = "10
+"
+horizontal_alignment = 1
+
+[node name="Button" type="Button" parent="Camera3D"]
+anchors_preset = -1
+anchor_left = 0.849
+anchor_top = 0.89
+anchor_right = 0.98
+anchor_bottom = 0.955
+offset_left = 0.951965
+offset_top = -2.72003
+offset_right = 1.04004
+offset_bottom = -2.84003
+grow_horizontal = 0
+grow_vertical = 0
+text = "Shop"
+
+[node name="SalaryTimer" type="Timer" parent="."]
+wait_time = 10.0
+
+[connection signal="pressed" from="Camera3D/Button" to="." method="_on_shop_button_pressed"]
